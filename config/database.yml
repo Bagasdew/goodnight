@@ -21,13 +21,16 @@ default: &default
 
 development:
   <<: *default
-  database: goodnight_development
+  database: <%= ENV["RDS_DATABASE"] %>
+  username: <%= ENV["RDS_USERNAME"] %>
+  password: <%= ENV["RDS_PASSWORD"] %>
+  host: <%= ENV["RDS_HOST"] %>
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
   # When left blank, PostgreSQL will use the default role. This is
   # the same name as the operating system user running Rails.
-  #username: goodnight
+  #username: family_tree
 
   # The password associated with the PostgreSQL role (username).
   #password:
@@ -55,7 +58,9 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: goodnight_test
+  database: <%= ENV["RDS_DATABASE_TEST"] %>
+  username: <%= ENV["RDS_USERNAME"] %>
+  password: <%= ENV["RDS_PASSWORD"] %>
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -79,6 +84,6 @@ test:
 #
 production:
   <<: *default
-  database: goodnight_production
-  username: goodnight
-  password: <%= ENV["GOODNIGHT_DATABASE_PASSWORD"] %>
+  database: <%= ENV["RDS_DATABASE"] %>
+  username: <%= ENV["RDS_USERNAME"] %>
+  password: <%= ENV["RDS_PASSWORD"] %>
