@@ -7,4 +7,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  get 'user/index'
+  post 'user/clock_in'
+  post 'user/clock_out'
+  post 'user/follow'
+  post 'user/unfollow'
 end

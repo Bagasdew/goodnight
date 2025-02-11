@@ -8,4 +8,8 @@ module ApplicationHelper
 
     formatted_errors
   end
+
+  def self.format_datetime(date, format = '%d/%m/%Y %H:%M')
+    date.strftime(format)
+  end
 end
