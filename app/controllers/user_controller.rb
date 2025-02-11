@@ -3,13 +3,13 @@ class UserController < ApplicationController
   def index
     current_user = User.find_by(id: index_params[:user_id])
     following_ids = current_user.following.pluck(:followee_id)
-    following_presences = Presence.includes(:user).where(user_id: following_ids, created_at: 1.week.ago..Time.now).order(:created_at)
+    following_presences = Presence.includes(:user).where(user_id: following_ids, clock_in: 1.week.ago..Time.now).order(:clock_in)
     formatted_presences = []
     following_presences.each do |presence|
       formatted_presences << {
         name: presence.user.name,
-        clock_in: presence.clock_in,
-        clock_out: presence.clock_out
+        clock_in: ApplicationHelper.format_datetime(presence.clock_in),
+        clock_out: ApplicationHelper.format_datetime(presence.clock_out)
       }
     end
 

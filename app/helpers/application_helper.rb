@@ -10,6 +10,7 @@ module ApplicationHelper
   end
 
   def self.format_datetime(date, format = '%d/%m/%Y %H:%M')
+    return if date.nil?
     date.strftime(format)
   end
 end

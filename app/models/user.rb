@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
     followings.map do |following|
       {
+        followee_id: following.followee.id,
         name: following.followee.name
       }
     end
@@ -16,6 +17,7 @@ class User < ApplicationRecord
     followers = FollowList.includes(:follower).where(followee_id: self.id)
     followers.map do |follower|
       {
+        follower_id: follower.follower.id,
         name: follower.follower.name
       }
     end
