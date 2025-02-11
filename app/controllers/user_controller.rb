@@ -3,7 +3,7 @@ class UserController < ApplicationController
   def index
     current_user = User.find_by(id: index_params[:user_id])
     following_ids = current_user.following.pluck(:followee_id)
-    following_presences = Presence.includes(:user).where(user_id: following_ids, clock_in: 1.week.ago..Time.now).order(:clock_in)
+    following_presences = Presence.includes(:user).where(user_id: following_ids, clock_in: 1.week.ago..Time.now).where.not(clock_out: nil).order(Arel.sql('EXTRACT(EPOCH FROM (clock_out - clock_in)) DESC'))
     formatted_presences = []
     following_presences.each do |presence|
       formatted_presences << {

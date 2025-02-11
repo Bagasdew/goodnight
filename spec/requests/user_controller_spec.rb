@@ -17,6 +17,7 @@ RSpec.describe "UserControllers", type: :request do
     context 'with valid parameters' do
       it 'returns following user clock ins from the past week' do
         john_clocks_in
+        john_clocks_in.update(clock_out: now)
         jane_follows_john
         get '/user/index', params: {
           user_id: jane.id
@@ -26,7 +27,7 @@ RSpec.describe "UserControllers", type: :request do
         expect(json['presences'].first).to eq({
                                                 "name" => john.name,
                                                 "clock_in" => ApplicationHelper.format_datetime(now.in_time_zone - 8.hours),
-                                                "clock_out" => nil
+                                                "clock_out" => ApplicationHelper.format_datetime(now.in_time_zone)
                                               })
       end
     end
@@ -36,6 +37,7 @@ RSpec.describe "UserControllers", type: :request do
         john_clocks_in_weeks_ago
         john_clocks_in_weeks_ago.update(clock_out: now-1.week)
         john_clocks_in
+        john_clocks_in.update(clock_out: now)
 
         jane_follows_john
         get '/user/index', params: {
@@ -46,7 +48,7 @@ RSpec.describe "UserControllers", type: :request do
         expect(json['presences'].first).to eq({
                                                 "name" => john.name,
                                                 "clock_in" => ApplicationHelper.format_datetime(now.in_time_zone - 8.hours),
-                                                "clock_out" => nil
+                                                "clock_out" => ApplicationHelper.format_datetime(now.in_time_zone)
                                               })
       end
     end
