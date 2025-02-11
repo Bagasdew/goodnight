@@ -49,7 +49,7 @@ class UserController < ApplicationController
   end
 
   def follow
-    follow_list = FollowList.new(follow_params)
+    follow_list = FollowList.new(follower_id: follow_params[:user_id], followee_id: follow_params[:following_user_id])
     follow_list.valid?
     if follow_list.errors.any?
       render json: { errors: ApplicationHelper.format_errors(follow_list.errors) }, status: :unprocessable_content
@@ -63,7 +63,8 @@ class UserController < ApplicationController
   def unfollow
     existing_follow_list = FollowList.find_by(follower_id: params[:user_id], followee_id: params[:following_user_id])
     unless existing_follow_list.present?
-      render json: { errors: ApplicationHelper.format_errors(errors.add(:base, "User is not followed")) }, status: :unprocessable_content
+      render json: { errors: "User is not followed" }, status: :unprocessable_content
+      return
     end
 
     existing_follow_list.destroy!

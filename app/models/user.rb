@@ -3,10 +3,22 @@ class User < ApplicationRecord
   has_many :follow_lists
 
   def following
-    FollowList.where(follower_id: self.id)
+    followings = FollowList.includes(:followee).where(follower_id: self.id)
+
+    followings.map do |following|
+      {
+        name: following.followee.name
+      }
+    end
   end
 
   def follower
-    FollowList.where(followee_id: self.id)
+    followers = FollowList.includes(:follower).where(followee_id: self.id)
+    followers.map do |follower|
+      {
+        name: follower.follower.name
+      }
+    end
+
   end
 end
